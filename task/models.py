@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from accounts.models import CustomUser
 class PackageType(models.Model):
@@ -17,11 +19,11 @@ class Courier(models.Model):
         ('sedan', 'Sedan'),
         ('light_truck', 'Light Truck'),
         ('heavy_truck', 'Heavy Truck')
-    ])
-    creation_time = models.DateTimeField(auto_now_add=True)
+    ], default="none")
+    # creation_time = models.DateTimeField(auto_now_add=True , default=datetime.datetime.now())
     modify_time = models.DateTimeField(auto_now=True)
-    star=models.IntegerField()
-    balance=models.DecimalField()
+    star=models.IntegerField( max_length=1,default=0)
+    balance=models.DecimalField(max_digits=10 , decimal_places=0 , default=0)
 
 
 
