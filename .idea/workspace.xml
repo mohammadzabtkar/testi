@@ -5,34 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84796838-fb5f-4723-9025-5cb66cee8618" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/courier/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/migrations/0002_courier_latitude_courier_longitude_courier_status_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/migrations/0003_courierlocations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/migrations/0004_rename_courierlocations_courierlocation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/courier/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sender/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task/migrations/0002_remove_tasks_courier_remove_endcustomer_user_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task/migrations/0003_rename_taskdeliverylocations_taskdeliverylocation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task/migrations/0004_alter_task_payment_type.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/location/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/task/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/migrations/0002_remove_packagetype_phone_number_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/migrations/0003_rename_tasks_task.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/migrations/0004_remove_task_vehicle_type_courier_balance_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/task/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +110,9 @@
       <workItem from="1726378710746" duration="28000" />
       <workItem from="1737135002302" duration="17307000" />
       <workItem from="1737246883531" duration="2712000" />
-      <workItem from="1737302655228" duration="19373000" />
+      <workItem from="1737302655228" duration="23065000" />
+      <workItem from="1737389331689" duration="10159000" />
+      <workItem from="1737414039819" duration="3951000" />
     </task>
     <servers />
   </component>
