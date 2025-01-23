@@ -35,14 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.gis',
+    # 'django.contrib.gis',
     'dashboard',
     'accounts',
     'task',
     'sender',
     'courier',
     'location',
-    # 'vehicle',
 ]
 
 MIDDLEWARE = [
@@ -87,17 +86,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 ##         'ENGINE': 'django.db.backends.postgresql',
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'peykdb',
+#         'USER': 'puser',
+#         'PASSWORD': 'aA137777265476?!',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.postgresql',
-        "ENGINE": "django.contrib.gis.db.backends.postgis",
-        'NAME': 'peyk_db',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'peykdb',
         'USER': 'puser',
         'PASSWORD': 'aA137777265476?!',
         'HOST': 'localhost',
         'PORT': '5432',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -137,6 +148,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\gdal.dll"
-GEOS_LIBRARY_PATH = r"C:\Path\To\geos_c.dll"
+#
+# GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\gdal.dll"
+# GEOS_LIBRARY_PATH = r"C:\Path\To\geos_c.dll"
