@@ -3,4 +3,4 @@ from django.shortcuts import render
 import datetime
 # Create your views here.
 def dashboard(request):
-    return HttpResponse("you are online  , welcome to peyk Dashboard page" )
+    return render(request , 'dashboard/dashboard.html')

@@ -1,0 +1,32 @@
+
+{% extends '_base.html' %}
+
+{% block title %}
+    افزودن انبار ایران
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid  mt-3">
+        <div class="row">
+            <div class="col-md-12 mx-auto my-auto h-100 d-flex align-items-center justify-content-center ">
+                <div class="card text-right shadow h-auto d-inline-block" >
+                    <div class="card-body">
+                        <h5 class="card-title">افزودن زون جدید</h5>
+<!--                        <p class="card-text">لطفا نام انبار ایران را وارد کنید:</p>-->
+                        <form method="post">
+                        {% csrf_token %}
+                        <table>
+                            {{ form.as_table }}
+                        </table>
+                        <button type="submit" class="btn btn-primary">تایید</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

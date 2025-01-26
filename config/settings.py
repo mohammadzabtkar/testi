@@ -35,13 +35,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.gis',
+    'django.contrib.gis',
     'dashboard',
     'accounts',
     'task',
     'sender',
     'courier',
-    'location',
+    'zone',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -151,3 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #
 # GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\gdal.dll"
 # GEOS_LIBRARY_PATH = r"C:\Path\To\geos_c.dll"
+
+
+
