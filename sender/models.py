@@ -11,10 +11,10 @@ class SenderAddress(models.Model):
     def __str__(self):
         return self.address[:30]
 
-class SenderUser(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15)
-    balance = models.IntegerField(default=0)
-    deposite = models.PositiveSmallIntegerField(default=0)
-    def __str__(self):
-        return str(self.user.first_name)
+# class SenderUser(models.Model):
+#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+#     phone_number = models.CharField(max_length=15)
+#     balance = models.IntegerField(default=0)
+#     deposite = models.PositiveSmallIntegerField(default=0)
+#     def __str__(self):
+#         return str(self.user.first_name)

@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-sqfim&23+7!#cre(bi3d@6)3&kav@i)da2gm-lsa2j+p_*neq#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'rest_framework',
+    'channels',
     'dashboard',
     'accounts',
     'task',
@@ -43,6 +45,12 @@ INSTALLED_APPS = [
     'courier',
     'zone',
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,29 +81,27 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+ASGI_APPLICATION = 'config.asgi.application'
+
+
+
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+
+
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-##         'ENGINE': 'django.db.backends.postgresql',
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'peykdb',
-#         'USER': 'puser',
-#         'PASSWORD': 'aA137777265476?!',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
 
 
 DATABASES = {
@@ -109,6 +115,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -149,8 +156,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #
-# GDAL_LIBRARY_PATH = r"C:\Program Files\GDAL\gdal.dll"
-# GEOS_LIBRARY_PATH = r"C:\Path\To\geos_c.dll"
 
 
 
+# Allowed Hosts
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+# CORS & WebSocket Permissions
+CORS_ALLOW_ALL_ORIGINS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8001"]
+
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+}

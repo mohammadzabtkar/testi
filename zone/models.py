@@ -10,12 +10,6 @@ class Zone(models.Model):
     def __str__(self):
         return self.name
 
-    def contains_point(self, latitude, longitude):
-        """
-        بررسی می‌کند که آیا یک نقطه در محدوده چندضلعی این زون قرار دارد یا نه.
-        :param latitude: عرض جغرافیایی نقطه
-        :param longitude: طول جغرافیایی نقطه
-        :return: True اگر نقطه در زون باشد، در غیر این صورت False
-        """
+    def contains_point(self, longitude, latitude):
         point = Point(longitude, latitude)  # توجه: ابتدا طول، سپس عرض
         return self.polygon.contains(point)
