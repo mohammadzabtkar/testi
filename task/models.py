@@ -71,8 +71,8 @@ class Task(models.Model):
     courier_take_time = models.DateTimeField(null=True, blank=True)
     delivered_time = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
-        return f"Task {self.id} - {self.status}"
+    # def __str__(self):
+    #     return f"Task {self.id} - {self.status}"
 
 
 class PackageImage(models.Model):

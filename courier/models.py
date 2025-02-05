@@ -30,8 +30,8 @@ class Courier(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True) #برخی موارد میشه لوکیشن پیک رو ثبت کرد مثلا موقعی که آنلاین میشه
     longitude = models.DecimalField(max_digits=9, decimal_places=6, blank=True, null=True)
 
-    def __str__(self):
-        return self.user.first_name
+    # def __str__(self):
+    #     return self.user.first_name
 
 class CourierLocation(models.Model):
     courier = models.ForeignKey(Courier, on_delete=models.CASCADE)

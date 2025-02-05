@@ -1,12 +1,8 @@
-# from django.urls import path
-# from channels.routing import ProtocolTypeRouter, URLRouter
-# from channels.auth import AuthMiddlewareStack
-# import task.routing
-#
-# application = ProtocolTypeRouter({
-#     "websocket": AuthMiddlewareStack(
-#         URLRouter(
-#             task.routing.websocket_urlpatterns
-#         )
-#     ),
-# })
+from django.urls import path
+from task.consumers import TaskConsumer, CourierConsumer
+
+websocket_urlpatterns = [
+    path('ws/public_task/', TaskConsumer.as_asgi()),  # برای مدیریت تسک‌ها توسط مشتری
+    path('ws/courier/', CourierConsumer.as_asgi()),        # برای مدیریت وضعیت پیک‌ها
+    path('ws/public_courier/', TaskConsumer.as_asgi()),
+]
