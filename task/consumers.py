@@ -1,3 +1,4 @@
+from OpenSSL.rand import status
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import AnonymousUser
@@ -38,7 +39,7 @@ class BaseConsumer(AsyncWebsocketConsumer):
         return user if user and not isinstance(user, AnonymousUser) else None
 
 
-class Task_Group_Select(BaseConsumer):
+class Group_Selecter_Consumer(BaseConsumer):
     async def connect(self):
         print("WebSocket connection attempt...")
         self.user = await self.get_authenticated_user()
@@ -62,16 +63,26 @@ class Task_Group_Select(BaseConsumer):
         """مدیریت ورود فرستنده و انتخاب گروه عمومی بر اساس تسک‌های باز"""
         print("User is a sender ...")
         try:
-            task = await database_sync_to_async(Task.objects.filter(status="pending").order_by('-id').first)()
+            # task = await database_sync_to_async(Task.objects.filter(status="pending").order_by('-id').first)()
+            task = await database_sync_to_async(Task.objects.order_by('-id').first)()
+            print(task)
             if not task:
                 print("No pending tasks found.")
                 await self.close()
                 return
-
-            vehicle_type = task.vehicle_type
-            self.room_group_name = f"public_group_{vehicle_type}"
-            await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-            await self.accept()
+            elif task.status =="pending":
+                vehicle_type = task.vehicle_type
+                self.room_group_name = f"public_group_{vehicle_type}"
+                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                await self.accept()
+            elif task.status in [ "accepted","in_transit"]:
+                vehicle_type = task.vehicle_type
+                self.room_group_name = f"private_group_{task.id}_{vehicle_type}"
+                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                await self.accept()
+            elif task.status in [ "delivered","canceled"]:
+                await self.close()
+                return
         except Exception as e:
             print(f"An error occurred: {e}")
             await self.close()
@@ -86,9 +97,25 @@ class Task_Group_Select(BaseConsumer):
                 self.room_group_name = f"public_group_{vehicle_type}"
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
                 await self.accept()
-            elif courier.status in ["offline", "at_work"]:
-                print(f"Courier is {courier.status}. Closing connection.")
-                await self.close()
+            elif courier.status in [ "at_work",]:
+                task = await database_sync_to_async(Task.objects.filter(courier=courier).order_by('-id').first)()
+                print(f"private_group_{task.id}")
+                self.room_group_name = f"private_group_{task.id}"
+                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                await self.accept()
+            elif courier.status in ["offline", ] :
+                task_count = await database_sync_to_async(Task.objects.filter(courier=courier , status="accepted").order_by('-id')).count()
+                task = await database_sync_to_async(Task.objects.filter(courier=courier , status="accepted").order_by('-id')).first()
+                if task_count >0 :
+                    print(f"private_group_{task.id}")
+                    self.room_group_name = f"private_group_{task.id}"
+                    await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                    await self.accept()
+
+                elif courier.status not in ["online", "at_work", "offline"]:
+                    print(f"Invalid courier status: {courier.status}")
+                    await self.close()
+                    return
         except Courier.DoesNotExist:
             print("Courier does not exist.")
             await self.close()
