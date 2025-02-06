@@ -7,11 +7,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from task.models import Task
 from courier.models import Courier
-from asgiref.sync import sync_to_async
-
 
 class BaseConsumer(AsyncWebsocketConsumer):
-    # دریافت کاربر از توکن JWT
     async def get_user_from_token(self, token_key):
         try:
             validated_token = JWTAuthentication().get_validated_token(token_key)
@@ -26,24 +23,20 @@ class BaseConsumer(AsyncWebsocketConsumer):
             return "senders"
         elif await database_sync_to_async(self.user.groups.filter(name='couriers').exists)():
             return "couriers"
-        else:
-            return None
+        return None
 
-    # دریافت توکن از URL
     async def get_token(self):
         query_string = self.scope['query_string'].decode()
         query_params = urllib.parse.parse_qs(query_string)
         return query_params.get('token', [None])[0]
 
-    # دریافت کاربر احراز هویت شده
     async def get_authenticated_user(self):
         token_key = await self.get_token()
-        print("user authorized successfully ... ")
-        user = await self.get_user_from_token(token_key)
-
-        if user is None or isinstance(user, AnonymousUser):
+        if not token_key:
             return None
-        return user
+        print("User authorized successfully ...")
+        user = await self.get_user_from_token(token_key)
+        return user if user and not isinstance(user, AnonymousUser) else None
 
 
 class TaskConsumer(BaseConsumer):
@@ -54,67 +47,67 @@ class TaskConsumer(BaseConsumer):
         if not self.user:
             print("User is not authorized.")
             await self.close()
-        else:
-            user_group = await self.get_user_group()
+            return
 
-            if user_group == "senders":
-                print("user is a sender ...")
+        user_group = await self.get_user_group()
+        if user_group == "senders":
+            print("User is a sender ...")
+            try:
+                task = await database_sync_to_async(Task.objects.filter(status="pending").order_by('-id').first)()
+                if not task:
+                    print("No pending tasks found.")
+                    await self.close()
+                    return
 
-                try:
-                    # self.task_id = self.scope['url_route']['kwargs'].get('task_id')
-                    task = await database_sync_to_async(Task.objects.filter(status="pending").order_by('-id').first)()
-                    print(task)
-                    vehicle_type = task.vehicle_type  # پیدا کردن vehicle_type تسک
+                vehicle_type = task.vehicle_type
+                print(vehicle_type)
+
+                self.room_group_name = f"public_group_{vehicle_type}"
+                print(self.room_group_name)
+                await self.channel_layer.group_add(self.room_group_name, self.channel_name)
+                await self.accept()
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                await self.close()
+
+        elif user_group == "couriers":
+            print("User is a courier ...")
+            try:
+                courier = await database_sync_to_async(Courier.objects.get)(user=self.user)
+                print(courier.status)
+
+                if courier.status == "online":
+                    vehicle_type = courier.vehicle_type
                     print(vehicle_type)
 
                     self.room_group_name = f"public_group_{vehicle_type}"
                     print(self.room_group_name)
                     await self.channel_layer.group_add(self.room_group_name, self.channel_name)
                     await self.accept()
-                except Task.DoesNotExist:
-                    print("Task does not exist.")
+                elif courier.status == "offline":
+                    print("Courier is offline.")
                     await self.close()
-                except Exception as e:
-                    print(f"An error occurred: {e}")
+                elif courier.status == "at_work":
+                    print("Courier is at work ...")
                     await self.close()
-
-            elif user_group == "couriers":
-                print("user is a courier ...")
-
-                try:
-                    courier = await database_sync_to_async(Courier.objects.get)(user=self.user)
-                    print(courier.status)
-                    if courier.status == "online" :
-                        print(await database_sync_to_async(str)(courier))
-                        vehicle_type = courier.vehicle_type  # پیدا کردن vehicle_type پیک
-                        print(vehicle_type)
-
-                        self.room_group_name = f"public_group_{vehicle_type}"
-                        print(self.room_group_name)
-                        await self.channel_layer.group_add(self.room_group_name, self.channel_name)
-                        await self.accept()
-                    elif courier.status == "online" :
-                        print(courier.status)
-                        await self.close()
-                    elif courier.status == "at_work" :
-                        print("courier is at work ...")
-                        await self.close()
-
-
-
-                except Courier.DoesNotExist:
-                    print("Courier does not exist.")
-                    await self.close()
-                except Exception as e:
-                    print(f"An error occurred: {e}")
-                    await self.close()
-
-            else:
-                print("jzzzz")
+            except Courier.DoesNotExist:
+                print("Courier does not exist.")
+                await self.close()
+            except Exception as e:
+                print(f"An error occurred: {e}")
                 await self.close()
 
+        else:
+            print("User group not recognized.")
+            await self.close()
+
+    async def disconnect(self, close_code):
+        print("User disconnected...")
+
+        if hasattr(self, 'room_group_name'):
+            await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+
     async def chat_message(self, event):
-        # پیام دریافتی را به کلاینت ارسال می‌کند
         await self.send(text_data=json.dumps({
             'action': event['action'],
             'message': event['message'],
