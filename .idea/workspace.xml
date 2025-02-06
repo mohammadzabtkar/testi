@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/routing.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/task/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/task/consumers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/task/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/task/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -43,7 +43,7 @@ class TaskCreationView(APIView):
                 print(f"Task created successfully with ID: {task.id}")  # پرینت ID تسک پس از ایجاد
 
                 # ارسال پیام به WebSocket
-                self.send_task_to_channel(task, action='created')
+                self.send_task_to_channel(task, action='new_task')
 
                 return Response({"message": "Task created successfully", "task_id": task.id},
                                 status=status.HTTP_201_CREATED)
