@@ -18,15 +18,21 @@ from django.contrib import admin
 from django.urls import path, include
 from django.urls import path
 from rest_framework_simplejwt import views as jwt_views
+from rest_framework_simplejwt.views import TokenRefreshView
+from accounts.views import RegisterView, PhoneNumberTokenObtainView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("dashboard.urls")),
     path('zone/', include('zone.urls')),
     path('task/', include('task.urls')),
-    path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('sender/', include('sender.urls')),
+    path('courier/', include('courier.urls')),
     path('api/', include('accounts.urls')),
+
+    path("api/register/", RegisterView.as_view(), name="register"),
+    path("api/token/", PhoneNumberTokenObtainView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
 ]
 

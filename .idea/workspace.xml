@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="84796838-fb5f-4723-9025-5cb66cee8618" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/accounts/migrations/0004_alter_customuser_phone_number.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/accounts/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/courier/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/courier/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sender/serializers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sender/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routing.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/routing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/task/consumers.py" beforeDir="false" afterPath="$PROJECT_DIR$/task/consumers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/courier/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/courier/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sender/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/sender/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
