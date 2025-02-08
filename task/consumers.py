@@ -92,6 +92,7 @@ class Group_Selecter_Consumer(BaseConsumer):
         print("User is a courier ...")
         try:
             courier = await database_sync_to_async(Courier.objects.get)(user=self.user)
+            print(courier)
             if courier.status == "online":
                 vehicle_type = courier.vehicle_type
                 self.room_group_name = f"public_group_{vehicle_type}"
@@ -104,6 +105,7 @@ class Group_Selecter_Consumer(BaseConsumer):
                 await self.channel_layer.group_add(self.room_group_name, self.channel_name)
                 await self.accept()
             elif courier.status in ["offline", ] :
+                print("offline user cant go into a public group")
                 task_count = await database_sync_to_async(Task.objects.filter(courier=courier , status="accepted").order_by('-id')).count()
                 task = await database_sync_to_async(Task.objects.filter(courier=courier , status="accepted").order_by('-id')).first()
                 if task_count >0 :
@@ -128,7 +130,7 @@ class Group_Selecter_Consumer(BaseConsumer):
         if hasattr(self, 'room_group_name'):
             await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-    async def chat_message(self, event):
+    async def sender_chat_message(self, event):
         await self.send(text_data=json.dumps({
             'action': event['action'],
             'message': event['message'],
@@ -139,109 +141,11 @@ class Group_Selecter_Consumer(BaseConsumer):
             'destination_address': event['destination_address'],
         }))
         print(f"Message received in consumer: {event['message']}")
-
-
-# class CourierConsumer(BaseConsumer):
-#     async def connect(self):
-#         # دریافت کاربر احراز هویت شده
-#         self.user = await self.get_authenticated_user()
-#
-#         # اگر کاربر احراز هویت نشده باشد یا پیک نباشد، اتصال قطع می‌شود
-#         if not self.user:
-#             await self.close()
-#         else:
-#             vehicle_type = await self.get_vehicle_type()  # دریافت نوع وسیله نقلیه
-#             self.vehicle_group = f"vehicle_{vehicle_type}"  # نام گروه بر اساس نوع وسیله نقلیه
-#             await self.channel_layer.group_add(self.vehicle_group, self.channel_name)
-#             await self.accept()
-#
-#     # دریافت نوع وسیله نقلیه پیک
-#     @database_sync_to_async
-#     def get_vehicle_type(self):
-#         courier = Courier.objects.get(user=self.user)
-#         return courier.vehicle_type
-#
-#     # قطع اتصال از کانال
-#     async def disconnect(self, close_code):
-#         if hasattr(self, 'vehicle_group'):
-#             await self.channel_layer.group_discard(self.vehicle_group, self.channel_name)
-#
-#     # دریافت داده‌ها از کلاینت
-#     async def receive(self, text_data):
-#         data = json.loads(text_data)
-#         if data.get('action') == 'assign_task':  # اگر عملیات اختصاص تسک باشد
-#             task_id = data.get('task_id')
-#             await self.assign_task(task_id)
-#
-#     # تخصیص تسک به پیک
-#     async def assign_task(self, task_id):
-#         task = await self.get_task(task_id)
-#         if task:
-#             # تغییر گروه کانال به گروه تسک مربوطه
-#             await self.channel_layer.group_discard(self.vehicle_group, self.channel_name)
-#             await self.channel_layer.group_add(f"task_{task.id}", self.channel_name)
-#             await self.channel_layer.group_send(
-#                 f"task_{task.id}",
-#                 {'type': 'task_assigned', 'message': f'Task {task.id} assigned to courier {self.user.username}'}
-#             )
-# class CourierConsumer(BaseConsumer):
-#     async def connect(self):
-#         # دریافت کاربر احراز هویت شده
-#         self.user = await self.get_authenticated_user()
-#
-#         # اگر کاربر احراز هویت نشده باشد یا پیک نباشد، اتصال قطع می‌شود
-#         if not self.user or not await self.is_courier():
-#             await self.close()
-#         else:
-#             vehicle_type = await self.get_vehicle_type()  # دریافت نوع وسیله نقلیه
-#             self.vehicle_group = f"vehicle_{vehicle_type}"  # نام گروه بر اساس نوع وسیله نقلیه
-#             await self.channel_layer.group_add(self.vehicle_group, self.channel_name)
-#             await self.accept()
-#
-#     # بررسی اینکه آیا کاربر یک پیک است
-#     @database_sync_to_async
-#     def is_courier(self):
-#         return Courier.objects.filter(user=self.user).exists()
-#
-#     # دریافت نوع وسیله نقلیه پیک
-#     @database_sync_to_async
-#     def get_vehicle_type(self):
-#         courier = Courier.objects.get(user=self.user)
-#         print(courier.vehicle_type)
-#         return courier.vehicle_type
-#
-#     # قطع اتصال از کانال
-#     async def disconnect(self, close_code):
-#         if hasattr(self, 'vehicle_group'):
-#             await self.channel_layer.group_discard(self.vehicle_group, self.channel_name)
-#
-#     # دریافت داده‌ها از کلاینت
-#     async def receive(self, text_data):
-#         data = json.loads(text_data)
-#         if data.get('action') == 'assign_task':  # اگر عملیات اختصاص تسک باشد
-#             task_id = data.get('task_id')
-#             await self.assign_task(task_id)
-#
-#     # تخصیص تسک به پیک
-#     async def assign_task(self, task_id):
-#         task = await self.get_task(task_id)
-#         if task:
-#             # تغییر گروه کانال به گروه تسک مربوطه
-#             await self.channel_layer.group_discard(self.vehicle_group, self.channel_name)
-#             await self.channel_layer.group_add(f"task_{task.id}", self.channel_name)
-#             await self.channel_layer.group_send(
-#                 f"task_{task.id}",
-#                 {'type': 'task_assigned', 'message': f'Task {task.id} assigned to courier {self.user.username}'}
-#             )
-#
-#     # دریافت تسک بر اساس شناسه
-#     @database_sync_to_async
-#     def get_task(self, task_id):
-#         return Task.objects.filter(id=task_id, status='pending').first()
-#
-#     # ارسال پیام تخصیص تسک به پیک
-#     async def task_assigned(self, event):
-#         await self.send(text_data=json.dumps({'message': event['message']}))
-#
-#
-#
+    async def courier_chat_message(self, event):
+        await self.send(text_data=json.dumps({
+            'action': event['action'],
+            'message': event['message'],
+            'courier_id': event['courier_id'],
+            'status': event['status'],
+        }))
+        print(f"Message received in consumer: {event['message']}")

@@ -16,7 +16,7 @@ class Courier(models.Model):
         ('truck','وانت'),
     )
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=15)
+    # phone_number = models.CharField(max_length=15)
     vehicle_type = models.CharField(max_length=20 , choices=VEHICLE_TYPE_CHOICES)
     vehicle_name = models.CharField(max_length=30 , blank=True , null=True )
     vehicle_country_number = models.IntegerField( blank=True , null=True)

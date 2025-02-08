@@ -1,17 +1,3 @@
-# from rest_framework.permissions import IsAuthenticated
-# from rest_framework.response import Response
-# from rest_framework import status, generics
-# from sender.models import SenderAddress
-# from .serializers import CompleteSenderProfileSerializer
-#
-# class CompleteSenderProfileView(generics.UpdateAPIView):
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = CompleteSenderProfileSerializer
-#
-#     def get_object(self):
-#         return SenderAddress.objects.get(user=self.request.user)
-
-
 
 from rest_framework.views import APIView
 from rest_framework.response import Response

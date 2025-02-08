@@ -18,7 +18,7 @@ class Task(models.Model):
     STATUS_CHOICES = (
         ('pending', 'در انتظار'),
         ('accepted', 'پذیرفته شد'),
-        ('in_transit', 'در حال ارسال'),
+        # ('in_transit', 'در حال ارسال'),
         ('delivered', 'تحویل داده شد'),
         ('canceled', 'کنسل شد'),
     )

@@ -24,15 +24,6 @@ class UserProfileView(APIView):
 
 
 
-# class RegisterView(generics.CreateAPIView):
-#     queryset = CustomUser.objects.all()
-#     serializer_class = RegisterSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.data)
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response({"message": "ثبت‌نام موفقیت‌آمیز بود."}, status=status.HTTP_201_CREATED)
 
 class RegisterView(APIView):
     def post(self, request):

@@ -63,7 +63,7 @@ class TaskCreationView(APIView):
         print(public_group_name)
 
         message = {
-            'type': 'chat_message',
+            'type': 'sender_chat_message',
             'action': action,
             'message': f'تسک {action} برای {task.vehicle_type}!',
             'task_id': task.id,

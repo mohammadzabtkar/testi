@@ -1,6 +1,8 @@
 from django.db import models
 from accounts.models import CustomUser
 
+class SenderProfile(models.Model):
+    pass
 
 # Create your models here.
 class SenderAddress(models.Model):

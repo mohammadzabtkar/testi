@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import SenderAddress
+from .models import SenderAddress ,SenderProfile
 
 
 
@@ -8,3 +8,4 @@ class SenderAddressAdmin(admin.ModelAdmin):
 
 
 admin.site.register(SenderAddress,SenderAddressAdmin)
+admin.site.register(SenderProfile)
